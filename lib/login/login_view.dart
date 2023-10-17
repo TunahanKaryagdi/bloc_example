@@ -1,5 +1,6 @@
 import 'package:bloc_example/home/home_view.dart';
 import 'package:bloc_example/login/login_cubit.dart';
+import 'package:bloc_example/service/login_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,8 +8,7 @@ class LoginView extends StatelessWidget {
   LoginView({super.key});
 
   final String _loginText = "Login";
-  final String _cannotLogin = "Cannot login";
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -16,14 +16,14 @@ class LoginView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: BlocProvider(
-        create: (context) => LoginCubit(),
+        create: (context) => LoginCubit(LoginService()),
         child: BlocConsumer<LoginCubit, LoginState>(
           listener: (context, state) {
             if (state is LoginFail) {
               showBottomSheet(
                 context: context,
                 builder: (context) => SizedBox(
-                  child: Text(_cannotLogin),
+                  child: Text(state.errorMessage),
                 ),
               );
             }
@@ -43,22 +43,26 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  Column _body(BuildContext context, Object? state) {
-    return Column(
-      children: [
-        state is LoginLoading
-            ? const CircularProgressIndicator()
-            : const SizedBox(),
-        TextField(
-          controller: _usernameController,
-        ),
-        TextField(controller: _passwordController),
-        ElevatedButton(
-            onPressed: () => context
-                .read<LoginCubit>()
-                .login(_usernameController.text, _passwordController.text),
-            child: Text(_loginText))
-      ],
+  Container _body(BuildContext context, Object? state) {
+    return Container(
+      color: Colors.black,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          state is LoginLoading
+              ? const CircularProgressIndicator()
+              : const SizedBox(),
+          TextField(
+            controller: _emailController,
+          ),
+          TextField(controller: _passwordController),
+          ElevatedButton(
+              onPressed: () => context
+                  .read<LoginCubit>()
+                  .login(_emailController.text, _passwordController.text),
+              child: Text(_loginText))
+        ],
+      ),
     );
   }
 }
