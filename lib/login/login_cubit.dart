@@ -1,18 +1,28 @@
 import 'package:bloc_example/model/login_request_model.dart';
 import 'package:bloc_example/service/login_service.dart';
+import 'package:bloc_example/utils/status_code_enum.dart';
+import 'package:bloc_example/utils/status_code_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 final class LoginCubit extends Cubit<LoginState> {
-  LoginCubit(this.loginService) : super(LoginInit());
+  LoginCubit(this._loginService) : super(LoginInit());
 
-  final LoginService loginService;
-  bool isSuccessful = true;
+  final LoginService _loginService;
 
   Future<void> login(String email, String password) async {
-    emit(LoginLoading());
-    bool isSuccess =
-        await loginService.login(LoginRequestModel(email, password));
-    isSuccess ? emit(LoginSuccessful()) : emit(LoginFail("an error occured"));
+    var response = await _loginService
+        .login(LoginRequestModel(email: email, password: password));
+
+    if (response == null) {
+      emit(LoginFail(StatusCode.unknown.name));
+      return;
+    }
+
+    if (response.statusCode.httpStatusCode == StatusCode.ok) {
+      emit(LoginSuccessful());
+    } else {
+      emit(LoginFail(response.statusCode.httpStatusCode.name));
+    }
   }
 }
 

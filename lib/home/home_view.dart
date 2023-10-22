@@ -1,5 +1,6 @@
 import 'package:bloc_example/home/home_cubit.dart';
-import 'package:bloc_example/model/product.dart';
+import 'package:bloc_example/model/home_response_model.dart';
+import 'package:bloc_example/service/home_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,7 +15,7 @@ class HomeView extends StatelessWidget {
           title: Text(_home),
         ),
         body: BlocProvider(
-          create: (context) => HomeCubit()..fetchItems(),
+          create: (context) => HomeCubit(HomeService())..fetchItems(),
           child: BlocConsumer<HomeCubit, HomeState>(
             listener: (context, state) {},
             builder: (context, state) {
@@ -31,8 +32,8 @@ class HomeView extends StatelessWidget {
     if (state is HomeLoading) {
       return _loadingSection();
     }
-    if (state is HomeSuccessful) {
-      return _successfulSection(state.products);
+    if (state is HomeItemsLoaded) {
+      return _successfulSection(state.users);
     }
     return const SizedBox();
   }
@@ -47,11 +48,11 @@ class HomeView extends StatelessWidget {
     return const Center(child: CircularProgressIndicator());
   }
 
-  ListView _successfulSection(List<Product> products) {
+  ListView _successfulSection(List<User> users) {
     return ListView.builder(
-      itemCount: products.length,
+      itemCount: users.length,
       itemBuilder: (context, index) {
-        return Text(products[index].title);
+        return Text(users[index].firstName ?? "");
       },
     );
   }

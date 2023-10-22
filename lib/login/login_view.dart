@@ -43,26 +43,23 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  Container _body(BuildContext context, Object? state) {
-    return Container(
-      color: Colors.black,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          state is LoginLoading
-              ? const CircularProgressIndicator()
-              : const SizedBox(),
-          TextField(
-            controller: _emailController,
-          ),
-          TextField(controller: _passwordController),
-          ElevatedButton(
-              onPressed: () => context
-                  .read<LoginCubit>()
-                  .login(_emailController.text, _passwordController.text),
-              child: Text(_loginText))
-        ],
-      ),
+  Column _body(BuildContext context, Object? state) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        state is LoginLoading
+            ? const CircularProgressIndicator()
+            : const SizedBox(),
+        TextField(
+          controller: _emailController,
+        ),
+        TextField(controller: _passwordController),
+        ElevatedButton(
+            onPressed: () => context
+                .read<LoginCubit>()
+                .login(_emailController.text, _passwordController.text),
+            child: Text(_loginText))
+      ],
     );
   }
 }
