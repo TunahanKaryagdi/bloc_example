@@ -3,7 +3,7 @@ import 'package:bloc_example/service/dio_helper.dart';
 import 'package:bloc_example/utils/service_enum.dart';
 import 'package:dio/dio.dart';
 
-class LoginService {
+final class LoginService {
   Future<Response?> login(LoginRequestModel requestModel) async {
     try {
       var response = await DioHelper.dio

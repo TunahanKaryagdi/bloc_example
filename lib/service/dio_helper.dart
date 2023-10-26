@@ -1,7 +1,7 @@
 import 'package:bloc_example/utils/service_enum.dart';
 import 'package:dio/dio.dart';
 
-class DioHelper {
+final class DioHelper {
   static Dio? _dio;
 
   static Dio get dio {

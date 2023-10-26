@@ -1,11 +1,22 @@
-class LoginRequestModel {
-  String email;
-  String password;
+import 'package:flutter/widgets.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'login_request_model.g.dart';
 
-  LoginRequestModel({
-    required this.email,
-    required this.password,
+@JsonSerializable()
+@immutable
+final class LoginRequestModel {
+  final String? email;
+  final String? password;
+
+  const LoginRequestModel({
+    this.email,
+    this.password,
   });
+
+  factory LoginRequestModel.fromJson(Map<String, dynamic> json) =>
+      _$LoginRequestModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LoginRequestModelToJson(this);
 
   LoginRequestModel copyWith({
     String? email,
@@ -16,32 +27,4 @@ class LoginRequestModel {
       password: password ?? this.password,
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'email': email,
-      'password': password,
-    };
-  }
-
-  factory LoginRequestModel.fromJson(Map<String, dynamic> json) {
-    return LoginRequestModel(
-      email: json['email'] as String,
-      password: json['password'] as String,
-    );
-  }
-
-  @override
-  String toString() => "LoginRequestModel(email: $email,password: $password)";
-
-  @override
-  int get hashCode => Object.hash(email, password);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is LoginRequestModel &&
-          runtimeType == other.runtimeType &&
-          email == other.email &&
-          password == other.password;
 }

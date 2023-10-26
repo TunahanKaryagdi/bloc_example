@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 final class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this._homeService) : super(HomeLoading());
 
-  HomeService _homeService;
+  final HomeService _homeService;
 
   bool isSuccessful = true;
 

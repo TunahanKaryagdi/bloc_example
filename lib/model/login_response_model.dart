@@ -1,11 +1,22 @@
-class LoginResponseModel {
-  String token;
-  String expiration;
+import 'package:flutter/widgets.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'login_response_model.g.dart';
 
-  LoginResponseModel({
-    required this.token,
-    required this.expiration,
+@JsonSerializable()
+@immutable
+final class LoginResponseModel {
+  final String? token;
+  final String? expiration;
+
+  const LoginResponseModel({
+    this.token,
+    this.expiration,
   });
+
+  factory LoginResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$LoginResponseModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LoginResponseModelToJson(this);
 
   LoginResponseModel copyWith({
     String? token,
@@ -16,33 +27,4 @@ class LoginResponseModel {
       expiration: expiration ?? this.expiration,
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'token': token,
-      'expiration': expiration,
-    };
-  }
-
-  factory LoginResponseModel.fromJson(Map<String, dynamic> json) {
-    return LoginResponseModel(
-      token: json['token'] as String,
-      expiration: json['expiration'] as String,
-    );
-  }
-
-  @override
-  String toString() =>
-      "LoginRequestModel(token: $token,expiration: $expiration)";
-
-  @override
-  int get hashCode => Object.hash(token, expiration);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is LoginResponseModel &&
-          runtimeType == other.runtimeType &&
-          token == other.token &&
-          expiration == other.expiration;
 }

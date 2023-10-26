@@ -1,13 +1,24 @@
-class HomeResponseModel {
-  List<User>? data;
-  bool? success;
-  String? message;
+import 'package:flutter/widgets.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'home_response_model.g.dart';
 
-  HomeResponseModel({
+@JsonSerializable()
+@immutable
+final class HomeResponseModel {
+  final List<User>? data;
+  final bool? success;
+  final String? message;
+
+  const HomeResponseModel({
     this.data,
     this.success,
     this.message,
   });
+
+  factory HomeResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$HomeResponseModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$HomeResponseModelToJson(this);
 
   HomeResponseModel copyWith({
     List<User>? data,
@@ -20,54 +31,26 @@ class HomeResponseModel {
       message: message ?? this.message,
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'data': data,
-      'success': success,
-      'message': message,
-    };
-  }
-
-  factory HomeResponseModel.fromJson(Map<String, dynamic> json) {
-    return HomeResponseModel(
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => User.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      success: json['success'] as bool?,
-      message: json['message'] as String?,
-    );
-  }
-
-  @override
-  String toString() =>
-      "HomeResponseModel(data: $data,success: $success,message: $message)";
-
-  @override
-  int get hashCode => Object.hash(data, success, message);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is HomeResponseModel &&
-          runtimeType == other.runtimeType &&
-          data == other.data &&
-          success == other.success &&
-          message == other.message;
 }
 
-class User {
-  int? id;
-  String? email;
-  String? firstName;
-  String? lastName;
+@JsonSerializable()
+@immutable
+final class User {
+  final int? id;
+  final String? email;
+  final String? firstName;
+  final String? lastName;
 
-  User({
+  const User({
     this.id,
     this.email,
     this.firstName,
     this.lastName,
   });
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserToJson(this);
 
   User copyWith({
     int? id,
@@ -82,39 +65,4 @@ class User {
       lastName: lastName ?? this.lastName,
     );
   }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'email': email,
-      'firstName': firstName,
-      'lastName': lastName,
-    };
-  }
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['id'] as int?,
-      email: json['email'] as String?,
-      firstName: json['firstName'] as String?,
-      lastName: json['lastName'] as String?,
-    );
-  }
-
-  @override
-  String toString() =>
-      "Data(id: $id,email: $email,firstName: $firstName,lastName: $lastName)";
-
-  @override
-  int get hashCode => Object.hash(id, email, firstName, lastName);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is User &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          email == other.email &&
-          firstName == other.firstName &&
-          lastName == other.lastName;
 }
